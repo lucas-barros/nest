@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
+    env_file:
+      - .env      
+    ports:
+      - 3000:3000
+      - 9229:9229
+    depends_on:
+      - postgres
+    volumes:
+      - .:/home/node/app
+    command: yarn start:dev
+
+  postgres:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
