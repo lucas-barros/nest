@@ -1,0 +1,4 @@
+export const VALIDATION_GROUPS = {
+  CREATE: 'CREATE',
+  UPDATE: 'UPDATE'
+}

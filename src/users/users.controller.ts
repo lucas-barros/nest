@@ -1,9 +1,9 @@
 import {
   Controller,
+  Body,
   Get,
   Post,
   Put,
-  Body,
   Param,
   Response,
   HttpStatus,
@@ -15,7 +15,8 @@ import {
 
 import { ApiUseTags, ApiImplicitBody } from '@nestjs/swagger'
 import { UsersService } from './users.service'
-import { UserDto, UserParams, GROUPS } from './dto'
+import { UserDto, UserParams } from './dto'
+import { VALIDATION_GROUPS } from '../constants'
 
 @Injectable()
 @ApiUseTags('users')
@@ -26,20 +27,26 @@ export class UsersController {
 
   @Post()
   @UsePipes(
-    new ValidationPipe({ transformOptions: { groups: [GROUPS.CREATE] } })
+    new ValidationPipe({
+      transformOptions: { groups: [VALIDATION_GROUPS.CREATE] }
+    })
   )
-  @ApiImplicitBody({ name: 'User', type: UserDto })
-  async create(@Response() res, userDto: UserDto) {
+  async create(@Response() res, @Body() userDto: UserDto) {
     const user = await this.service.create(userDto)
     return res.status(HttpStatus.OK).json(user)
   }
 
   @Put('/:id')
   @UsePipes(
-    new ValidationPipe({ transformOptions: { groups: [GROUPS.CREATE] } })
+    new ValidationPipe({
+      transformOptions: { groups: [VALIDATION_GROUPS.CREATE] }
+    })
   )
-  @ApiImplicitBody({ name: 'User', type: UserDto })
-  async update(@Response() res, userDto: UserDto, @Param() params: UserParams) {
+  async update(
+    @Response() res,
+    @Body() userDto: UserDto,
+    @Param() params: UserParams
+  ) {
     const { id } = params
     const user = await this.service.update(id, userDto)
 

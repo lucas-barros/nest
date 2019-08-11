@@ -26,11 +26,9 @@ export class User {
   @Column({ unique: true })
   email: string
 
-  @ApiModelProperty({ example: '1234' })
   @Column()
   password: string
 
-  @ApiModelProperty({ example: false })
   @Column({ default: false })
   isVerified: boolean
 

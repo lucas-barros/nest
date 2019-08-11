@@ -1,7 +1,7 @@
 {
-  "name": "tbd",
+  "name": "API",
   "version": "0.0.1",
-  "description": "",
+  "description": "Application to gather the user's favorite movies and series",
   "author": "",
   "license": "MIT",
   "scripts": {

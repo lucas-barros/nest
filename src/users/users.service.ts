@@ -10,6 +10,12 @@ export class UsersService {
   private readonly usersRepository: Repository<User>
 
   async create(userDto: UserDto): Promise<User> {
+    const user = await this.usersRepository.findOne({email: userDto.email})
+
+    if (user) {
+      throw new HttpException('User arealdy exists', HttpStatus.BAD_REQUEST)
+    }
+
     return this.usersRepository.save(userDto)
   }
 
