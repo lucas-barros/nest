@@ -5,8 +5,7 @@ import {
   IsString,
   IsDateString,
   IsEmail,
-  IsBoolean,
-  IsEmpty
+  IsBoolean
 } from 'class-validator'
 import { VALIDATION_GROUPS } from '../../constants'
 

@@ -1,6 +1,5 @@
 import { ConfigModule } from '../config/config.module'
 import { ConfigService } from '../config/config.service'
-import { User } from '../users/user.entity'
 
 export const databaseProvider = {
   provide: 'DATABASE_CONNECTION',
