@@ -17,14 +17,15 @@ export class ConfigService {
   private validateInput(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
       NODE_ENV: Joi.string()
-        .valid(['development', 'production', 'test', 'provision'])
-        .default('development'),
+        .valid(['local', 'development', 'production', 'test', 'provision'])
+        .default('local'),
       PORT: Joi.number().default(3000),
       DB_NAME: Joi.string(),
       DB_USER: Joi.string(),
       DB_PASSWORD: Joi.string(),
       DB_HOST: Joi.string(),
-      DB_PORT: Joi.number()
+      DB_PORT: Joi.number(),
+      JWT_SECRET: Joi.string()
     })
 
     const { error, value: validatedEnvConfig } = Joi.validate(
@@ -53,6 +54,10 @@ export class ConfigService {
   }
 
   get dbPassword(): string {
-    return this.envConfig.DB_Password
+    return this.envConfig.DB_PASSWORD
+  }
+
+  get jwtSecret(): string {
+    return this.envConfig.JWT_SECRET
   }
 }

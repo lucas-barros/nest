@@ -10,6 +10,7 @@ const swaggerSetup = (app: INestApplication) => {
     .setDescription('To be announced')
     .setVersion('1.0')
     .addTag('tbd')
+    .addBearerAuth('Authorization', 'header', 'apiKey')
     .build()
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup('api', app, document)

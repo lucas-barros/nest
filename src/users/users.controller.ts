@@ -10,20 +10,30 @@ import {
   Injectable,
   Inject,
   UsePipes,
+  UseGuards,
+  Request,
   ValidationPipe
 } from '@nestjs/common'
-import { ApiUseTags } from '@nestjs/swagger'
+import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger'
 import { UsersService } from './users.service'
 import { UserDto } from './dto'
 import { ParseIntPipe } from '../pipes'
+import { AuthGuard } from '@nestjs/passport'
 import { VALIDATION_GROUPS } from '../constants'
 
 @Injectable()
 @ApiUseTags('users')
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   @Inject(UsersService)
   private service: UsersService
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('me')
+  getMe(@Request() req) {
+    return req.user
+  }
 
   @Post()
   @UsePipes(
