@@ -10,7 +10,7 @@ import {
 } from 'class-validator'
 import { VALIDATION_GROUPS } from '../../constants'
 
-export default class {
+export default class UserDto {
   readonly id: number
 
   @ApiModelProperty({ example: 'Micheal' })
@@ -43,7 +43,6 @@ export default class {
   readonly password: string
 
   @ApiModelProperty({ example: false })
-  @IsEmpty({ groups: [VALIDATION_GROUPS.CREATE] })
   @IsOptional({ groups: [VALIDATION_GROUPS.UPDATE] })
   @IsBoolean({ always: true })
   readonly isVerified: boolean

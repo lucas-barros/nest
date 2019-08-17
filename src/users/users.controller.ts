@@ -12,10 +12,10 @@ import {
   UsePipes,
   ValidationPipe
 } from '@nestjs/common'
-
-import { ApiUseTags, ApiImplicitBody } from '@nestjs/swagger'
+import { ApiUseTags } from '@nestjs/swagger'
 import { UsersService } from './users.service'
-import { UserDto, UserParams } from './dto'
+import { UserDto } from './dto'
+import { ParseIntPipe } from '../pipes'
 import { VALIDATION_GROUPS } from '../constants'
 
 @Injectable()
@@ -39,15 +39,14 @@ export class UsersController {
   @Put('/:id')
   @UsePipes(
     new ValidationPipe({
-      transformOptions: { groups: [VALIDATION_GROUPS.CREATE] }
+      transformOptions: { groups: [VALIDATION_GROUPS.UPDATE] }
     })
   )
   async update(
     @Response() res,
     @Body() userDto: UserDto,
-    @Param() params: UserParams
+    @Param('id', new ParseIntPipe()) id: number
   ) {
-    const { id } = params
     const user = await this.service.update(id, userDto)
 
     return res.status(HttpStatus.OK).json(user)
@@ -60,9 +59,17 @@ export class UsersController {
   }
 
   @Get('/:id')
-  public async getUser(@Response() res, @Param() params: UserParams) {
-    const { id } = params
-    const user = await this.service.getOne(id)
+  public async getUser(
+    @Response() res,
+    @Param('id', new ParseIntPipe()) id: number
+  ) {
+    const user = await this.service.findOne(id)
+    return res.status(HttpStatus.OK).json(user)
+  }
+
+  @Get('/email/:email')
+  public async getUserByEmail(@Response() res, @Param('email') email: string) {
+    const user = await this.service.findOneByEmail(email)
     return res.status(HttpStatus.OK).json(user)
   }
 }

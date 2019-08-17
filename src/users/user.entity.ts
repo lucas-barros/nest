@@ -7,7 +7,6 @@ import {
   UpdateDateColumn,
   BeforeInsert
 } from 'typeorm'
-import { ApiModelProperty } from '@nestjs/swagger'
 
 @Entity('users')
 export class User {

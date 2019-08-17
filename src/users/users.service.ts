@@ -10,16 +10,17 @@ export class UsersService {
   private readonly usersRepository: Repository<User>
 
   async create(userDto: UserDto): Promise<User> {
-    const user = await this.usersRepository.findOne({email: userDto.email})
+    const user = await this.usersRepository.findOne({ email: userDto.email })
 
     if (user) {
       throw new HttpException('User arealdy exists', HttpStatus.BAD_REQUEST)
     }
 
-    return this.usersRepository.save(userDto)
+    const instance = this.usersRepository.create(userDto)
+    return this.usersRepository.save(instance)
   }
 
-  async update(id: string, userDto: UserDto): Promise<any> {
+  async update(id: number, userDto: UserDto): Promise<any> {
     const user = await this.usersRepository.findOne(id)
 
     if (!user) {
@@ -33,8 +34,18 @@ export class UsersService {
     return this.usersRepository.find()
   }
 
-  async getOne(id: string): Promise<User> {
+  async findOne(id: number | string): Promise<User> {
     const user = await this.usersRepository.findOne(id)
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    }
+
+    return user
+  }
+
+  async findOneByEmail(email: string): Promise<User> {
+    const user = await this.usersRepository.findOne({ email })
 
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND)
